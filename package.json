@@ -4,7 +4,7 @@
   "private": true,
   "main": "main.js",
   "scripts": {
-    "clean": "npm run clean:run && npm run clean:build",
+    "clean": "npm run clean:run && npm run clean:build && rm-rf node_modules",
     "clean:run": "rm -rf run",
     "clean:build": "rm -rf build",
     "prebuild": "npm run clean:build && npm run lint",
