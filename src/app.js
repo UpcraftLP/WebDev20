@@ -2,7 +2,7 @@
 const express = require('express');
 const logger = require('morgan');
 const path = require('path');
-const apiRouter = require('./routes/api');
+const apiRouterV1 = require('./routes/api/v1');
 const strings = require('./util/strings');
 
 const app = express();
@@ -14,8 +14,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/build', express.static(path.join(__dirname, '../build')));
-app.use('/api', apiRouter); // our REST api
-app.use(express.static(path.join(__dirname, 'static')));
+app.use('/api/v1', apiRouterV1); // our REST api, version 1
+app.use(express.static(path.join(__dirname, 'client/static')));
 
 // handle all errors
 app.use((err, req, res, next) => {
@@ -24,7 +24,7 @@ app.use((err, req, res, next) => {
     return next(err);
   }
   if (errorPages.includes(err.status)) {
-    res.redirect(`/error/${err.status}.html`);
+    res.redirect(`/error/${err.status}`);
   } else {
     res.status(500).json({ error: err });
   }
@@ -35,9 +35,9 @@ app.use((req, res) => {
   if (!strings.isBlank(req.path) && !req.path.toLowerCase().endsWith('.html')) {
     res.sendfile(`${req.path}.html`);
   } else {
-    res.redirect('/error/404.html');
+    res.redirect('/error/404');
   }
 });
 
 module.exports = app;
-module.exports.shutdown = apiRouter.shutdownDB;
+module.exports.shutdown = apiRouterV1.shutdownDB;

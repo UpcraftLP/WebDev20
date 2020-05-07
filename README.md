@@ -13,3 +13,10 @@ To get started, run
 ```sh
 npm install && npm run dev
 ```
+
+<br/>
+
+## API:
+
+This app provides a **REST**ful API. For more information see the [API documentation](doc/api/V1.md "API documentation").
+
