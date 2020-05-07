@@ -1,57 +1,24 @@
 #!/usr/bin/env node
 'use strict';
-/**
- * Module dependencies.
- */
+
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
-// const browserify = require('browserify');
 
 global.runDir = path.resolve(__dirname, 'run');
 if (!fs.existsSync(global.runDir)) {
   fs.mkdirSync(global.runDir);
 }
-const args = process.argv.slice(2);
-const dbg = args[0] === '--dev';
-if (dbg) {
-  console.log('Debug Mode enabled.');
-}
 
 const app = require(path.join(__dirname, 'src/app'));
 
-// const b = browserify({
-//   entries: 'main.js',
-//   cache: {},
-//   packageCache: {},
-//   debug: true
-// });
-
-/**
- * Get port from environment and store in Express.
- */
-
+// Get port from environment and store in Express.
 const port = normalizePort(process.env.PORT || '8080');
 app.set('port', port);
 
-// if (dbg) {
-//  b.plugin(livereload, {
-//    host: 'localhost',
-//    port: port,
-//    outfile: path.join(__dirname, 'src', 'generated/bundle.js')
-//  });
-// }
-
-/**
- * Create HTTP server.
- */
-
 const server = http.createServer(app);
 
-/**
- * Normalize a port into a number, string, or false.
- */
-
+// Normalize a port into a number, string, or false.
 function normalizePort (val) {
   const port = parseInt(val, 10);
 
@@ -68,9 +35,7 @@ function normalizePort (val) {
   return false;
 }
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+// Listen on provided port, on all network interfaces.
 server.listen(port);
 server.on('close', app.shutdown);
 server.on('error', (error) => {
