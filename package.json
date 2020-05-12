@@ -23,7 +23,8 @@
   },
   "standard": {
     "gobals": [
-      "runDir"
+      "runDir",
+      "debug"
     ]
   },
   "dependencies": {

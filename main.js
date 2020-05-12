@@ -5,6 +5,8 @@ const path = require('path');
 const fs = require('fs');
 const http = require('http');
 
+global.debug = true;
+
 global.runDir = path.resolve(__dirname, 'run');
 if (!fs.existsSync(global.runDir)) {
   fs.mkdirSync(global.runDir);
