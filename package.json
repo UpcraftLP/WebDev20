@@ -18,6 +18,7 @@
   },
   "semistandard": {
     "ignore": [
+      "**/client/**",
       "**/build/**"
     ]
   },
