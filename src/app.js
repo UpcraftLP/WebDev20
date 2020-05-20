@@ -40,4 +40,3 @@ app.use((req, res) => {
 });
 
 module.exports = app;
-module.exports.shutdown = apiRouterV1.shutdownDB;

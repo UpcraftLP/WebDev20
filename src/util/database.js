@@ -1,5 +1,6 @@
 'use strict';
 const sqlite3 = require('sqlite3');
+const sqlite = require('sqlite');
 const path = require('path');
 
 if (global.debug) {
@@ -7,30 +8,47 @@ if (global.debug) {
 }
 
 const dbLocation = path.resolve(global.runDir, 'content.db');
-const database = new sqlite3.Database(dbLocation, (err) => {
-  if (err) {
-    console.error(err.message);
-    process.exit(1);
-  }
-});
 console.log('Connected to database at ' + dbLocation);
 
-const runAsync = (sql) =>
-  new Promise((resolve, reject) => {
-    database.run(sql, (err) => err ? reject(err) : resolve());
-  });
+const openDB = async () => sqlite.open({
+  filename: dbLocation,
+  driver: sqlite3.Database
+}).catch(reason => {
+  console.error(reason);
+  process.exit(1);
+});
 
-runAsync('CREATE TABLE IF NOT EXISTS attachments (id TEXT NOT NULL PRIMARY KEY, type TEXT NOT NULL, data BLOB NOT NULL)')
-  .then(() => runAsync('CREATE TABLE IF NOT EXISTS posts (post_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, creation_time TEXT NOT NULL, text TEXT NOT NULL, attachment_id TEXT NULL, FOREIGN KEY(attachment_id) REFERENCES attachments(id))'))
-  .then(() => {
-    // init the database
-    // TODO populate with sample data
+const processDB = async (func) => {
+  const database = await openDB();
+  let result;
+  try {
+    result = await func(database);
+  } catch (e) {
+    console.error(e);
+    result = null;
+  }
+  await database.close();
+  return result;
+};
+
+// init the database on startup
+(async () => {
+  await processDB(async database => {
+    // create tables
+    await database.run('CREATE TABLE IF NOT EXISTS attachments (id TEXT NOT NULL PRIMARY KEY, type TEXT NOT NULL, data BLOB NOT NULL)');
+    await database.run('CREATE TABLE IF NOT EXISTS posts (post_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, creation_time TEXT NOT NULL, text TEXT NOT NULL, attachment_id TEXT NULL, FOREIGN KEY(attachment_id) REFERENCES attachments(id))');
+
     if (global.debug) {
-      database.run('INSERT INTO posts (creation_time, text) VALUES (CURRENT_TIMESTAMP, \'Sample Text\')');
-      database.run('INSERT INTO posts (creation_time, text) VALUES (DATETIME(\'now\', \'start of month\'), \'Sample Text 2\')');
-      database.run('INSERT INTO posts (creation_time, text) VALUES (DATETIME(\'now\', \'-1 month\'), \'Sample Text 3\')');
-      database.run('INSERT INTO posts (creation_time, text) VALUES (DATETIME(\'now\', \'start of month\', \'+5 days\'), \'Sample Text 4\')');
-      database.run('INSERT INTO posts (creation_time, text) VALUES (DATETIME(\'2008-12-30T09:34\'), \'Sample Text 234243\')');
+      const statement = await database.prepare('INSERT INTO posts (creation_time, text) VALUES (?, ?)');
+      // TODO populate with sample data
+      await statement.run('CURRENT_TIMESTAMP', 'Sample Text');
+      await statement.run('DATETIME(\'now\', \'start of month\')', 'Sample Text 2');
+      await statement.run('DATETIME(\'now\', \'-1 month\')', 'Sample Text 3');
+      await statement.run('DATETIME(\'now\', \'start of month\', \'+5 days\')', 'Sample Text 4');
+      await statement.run('DATETIME(\'2008-12-30T09:34\')', 'Sample Text 234243');
+      await statement.finalize();
     }
   });
-module.exports = database;
+})();
+
+module.exports = processDB;

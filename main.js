@@ -39,7 +39,6 @@ function normalizePort (val) {
 
 // Listen on provided port, on all network interfaces.
 server.listen(port);
-server.on('close', app.shutdown);
 server.on('error', (error) => {
   if (error.syscall !== 'listen') {
     throw error;
