@@ -18,9 +18,12 @@
   },
   "semistandard": {
     "ignore": [
-      "**/client/**",
       "**/build/**"
-    ]
+    ],
+    "env": {
+      "browser": true,
+      "node": true
+    }
   },
   "standard": {
     "gobals": [
