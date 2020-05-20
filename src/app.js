@@ -32,8 +32,8 @@ app.use((err, req, res, next) => {
 
 // catch 404 and forward to error handler
 app.use((req, res) => {
-  if (!strings.isBlank(req.path) && !req.path.toLowerCase().endsWith('.html')) {
-    res.sendfile(`${req.path}.html`);
+  if (!strings.isBlank(req.path) && !strings.hasExtension(req.path.toLowerCase())) {
+    res.sendFile(path.join(__dirname, `client/static/${req.path}.html`));
   } else {
     res.redirect('/error/404');
   }

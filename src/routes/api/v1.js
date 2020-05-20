@@ -8,6 +8,7 @@ const router = express.Router();
 router.post('/post/create', (req, res, next) => {
   // the URI where the new post is available
   const postURI = '/';
+  console.log(`body: ${JSON.stringify(req.body)}`);
   res.location(postURI).status(201).json({ status: 201, message: 'Created' });
 });
 
