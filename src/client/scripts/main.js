@@ -11,8 +11,8 @@ if(form) {
 
     const xhr = new XMLHttpRequest();
     const url = `${window.location.protocol}//${window.location.host}/api/v1/post/create`;
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
     const data = JSON.stringify({
       text: text,
       attachment: attachment

@@ -4,25 +4,37 @@ const db = require('../../util/database');
 
 const router = express.Router();
 
+// check content type
+router.use('/', (req, res, next) => {
+  if (req.header('Content-Type') !== 'application/json') {
+    const status = 400;
+    return res.status(status).json({ status: status, message: 'Bad Request', error: 'Invalid Content Type' });
+  }
+  next();
+});
+
 // create post
 router.post('/post/create', (req, res, next) => {
   // the URI where the new post is available
   const postURI = '/';
   console.log(`body: ${JSON.stringify(req.body)}`);
-  res.location(postURI).status(201).json({ status: 201, message: 'Created' });
+  const status = 201;
+  res.location(postURI).status(status).json({ status: status, message: 'Created' });
 });
 
 // retrieve information about a post
 router.get('/posts/:id', (req, res, next) => {
   // get post information
   const postId = req.params.id;
-  res.status(200).json({ status: 200, message: 'ok', post: postId });
+  const status = 200;
+  res.status(status).json({ status: status, message: 'OK', post: postId });
 });
 
 // delete post (and attachment, if any)
 router.post('/posts/:id/delete', (req, res, next) => {
   const postId = req.params.id;
-  res.status(202).json({ status: 202, message: 'Post Deleted', post: postId });
+  const status = 202;
+  res.status(status).json({ status: status, message: 'Post Deleted', post: postId });
 });
 
 // modify post
@@ -37,12 +49,14 @@ router.get('/posts', (req, res, next) => {
   // use req.query.$key to get query parameters
   // const page = req.query.page ? req.query.page : 1;
   // const sortingOrder = req.query.sort ? req.query.sort : 'latest';
-  res.status(200).json({ status: 200, message: 'ok' });
+  const status = 200;
+  res.status(status).json({ status: status, message: 'OK' });
 });
 
 // catch 404 for api calls and respond with json message
 router.use((req, res, next) => {
-  res.status(404).json({ status: 404, message: 'Not Found' });
+  const status = 404;
+  res.status(status).json({ status: status, message: 'Not Found' });
 });
 
 module.exports = router;

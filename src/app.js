@@ -26,7 +26,8 @@ app.use((err, req, res, next) => {
   if (errorPages.includes(err.status)) {
     res.redirect(`/error/${err.status}`);
   } else {
-    res.status(500).json({ error: err });
+    const status = 500;
+    res.status(status).json({ status: status, message: err });
   }
 });
 
