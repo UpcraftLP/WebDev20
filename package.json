@@ -26,7 +26,7 @@
     }
   },
   "standard": {
-    "gobals": [
+    "globals": [
       "runDir",
       "debug"
     ]
