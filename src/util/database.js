@@ -34,19 +34,27 @@ const processDB = async (func) => {
 // init the database on startup
 (async () => {
   await processDB(async database => {
+    // check whether table exists
+    const arr = await database.all('SELECT name FROM sqlite_master WHERE type=\'table\' AND name=\'posts\'');
+    const populateDB = global.debug && !arr.length;
     // create tables
-    await database.run('CREATE TABLE IF NOT EXISTS attachments (id TEXT NOT NULL PRIMARY KEY, type TEXT NOT NULL, data BLOB NOT NULL)');
-    await database.run('CREATE TABLE IF NOT EXISTS posts (post_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, creation_time TEXT NOT NULL, text TEXT NOT NULL, attachment_id TEXT NULL, FOREIGN KEY(attachment_id) REFERENCES attachments(id))');
+    await database.run('CREATE TABLE IF NOT EXISTS attachments (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, type TEXT NULL, data TEXT NULL)');
+    await database.run('CREATE TABLE IF NOT EXISTS posts (post_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, creation_time TEXT NOT NULL, text TEXT NOT NULL, attachment_id INTEGER NULL, FOREIGN KEY(attachment_id) REFERENCES attachments(id))');
 
-    if (global.debug) {
-      const statement = await database.prepare('INSERT INTO posts (creation_time, text) VALUES (?, ?)');
+    if (populateDB) {
+      const statement = await database.prepare('INSERT INTO posts (creation_time, text) VALUES (DATETIME(?), ?)');
       // TODO populate with sample data
-      await statement.run('CURRENT_TIMESTAMP', 'Sample Text');
-      await statement.run('DATETIME(\'now\', \'start of month\')', 'Sample Text 2');
-      await statement.run('DATETIME(\'now\', \'-1 month\')', 'Sample Text 3');
-      await statement.run('DATETIME(\'now\', \'start of month\', \'+5 days\')', 'Sample Text 4');
-      await statement.run('DATETIME(\'2008-12-30T09:34\')', 'Sample Text 234243');
-      await statement.finalize();
+      try {
+        await statement.run('now', 'Sample Text');
+        await statement.run('2008-12-30T09:34', 'Sample Text 2');
+        await statement.run('2018-12-30T11:39', 'Sample Text 3');
+        await statement.run('2019-12-30T21:54', 'Sample Text 4');
+        await statement.run('2020-05-30T09:44', 'Sample Text 234243');
+        await statement.finalize();
+      } catch (e) {
+        console.error('unable to write sample data');
+        console.error(e);
+      }
     }
   });
 })();
