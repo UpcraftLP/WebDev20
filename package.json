@@ -9,7 +9,7 @@
     "clean:build": "rm -rf build",
     "prebuild": "npm run clean:build && npm run lint",
     "build": "browserify -p tinyify -t [ browserify-css --minify=true --output build/style.css ] -o build/main.js src/client/scripts/main.js",
-    "predebug": "npm run clean:build && npm run lint",
+    "predebug": "npm run lint:fix",
     "debug": "browserify -t [ browserify-css --minify=false --output build/style.css ] -o build/main.js src/client/scripts/main.js",
     "lint": "semistandard",
     "lint:fix": "semistandard --fix",
@@ -32,14 +32,14 @@
     ]
   },
   "dependencies": {
-    "browserify": "^16.5.1",
-    "browserify-css": "^0.15.0",
     "express": "^4.17.1",
     "morgan": "^1.10.0",
     "sqlite": "^4.0.7",
     "sqlite3": "^4.2.0"
   },
   "devDependencies": {
+    "browserify": "^16.5.1",
+    "browserify-css": "^0.15.0",
     "eslint-config-semistandard": "^15.0.0",
     "eslint-config-standard": "^14.1.1",
     "semistandard": "^14.2.0",
