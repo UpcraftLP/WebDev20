@@ -11,8 +11,8 @@ const app = express();
 const errorPages = [404, 500];
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/build', express.static(path.join(__dirname, '../build')));
 app.use('/api/v1', apiRouterV1); // our REST api, version 1
 app.use(express.static(path.join(__dirname, 'client/static')));
