@@ -14,8 +14,6 @@ if (form) {
     // const form = document.getElementById('form-submit');
     const text = document.getElementById('input-text').value;
     const attachment = document.getElementById('input-attachment');
-    console.log(attachment.value);
-
     const xhr = new XMLHttpRequest();
     const url = `${window.location.protocol}//${window.location.host}/api/v1/post/create`;
     xhr.open('POST', url, true);
@@ -24,12 +22,15 @@ if (form) {
       text: text
     };
     if (attachment) {
-      json.attachment = {
-        type: 'json', // FIXME check file type
-        data: await toBase64(attachment.files[0])
-      };
+      json.attachment = await toBase64(attachment.files[0]);
     }
     const data = JSON.stringify(json);
-    xhr.send(data);
+    console.log('request: ' + data);
+
+    try {
+      xhr.send(data);
+    } catch (e) {
+      console.log(e);
+    }
   });
 }

@@ -15,23 +15,29 @@ router.use('/', (req, res, next) => {
 
 // create post
 router.post('/post/create', async (req, res, next) => {
-  // const json = req.body;
-  // await db(async database => {
-  //   let attachmentId = null;
-  //   if (json.attachment) {
-  //     const attachment = json.attachment;
-  //     await database.run(`INSERT INTO attachments (type, data) VALUES (${attachment.type}, QUOTE(${attachment.data}))`);
-  //     attachmentId = await database.run('SELECT id FROM attachments where LAST_INSERT_ROWID()');
-  //     await database.run(`INSERT INTO posts (creation_time, text, attachment_id) VALUES (DATETIME('now'), ${json.text}, ${attachmentId})`);
-  //     const id = await database.run('SELECT post_id FROM posts where LAST_INSERT_ROWID()');
-  //     // the URI where the new post is available
-  //     const postURI = `/${id}`;
-  //     const status = 201;
-  //     res.location(postURI).status(status).json({ status: status, message: 'Created' });
-  //   }
-  // });
-  // FIXME sqlite does not accept b64 string because it starts with 'data:application/json;base64,'
-  next();
+  const json = req.body;
+  await db(async database => {
+    let attachmentId = null;
+    if (json.attachment) {
+      const att = json.attachment.split(';', 2);
+      if (att.length !== 2) {
+        const status = 400;
+        res.status(status).json({ status: status, message: 'invalid attachment', data: att });
+      }
+      const type = att[0].substring('data:'.length);
+      console.log(type);
+      console.log(att[1]);
+      await database.run('INSERT INTO attachments (type, data) VALUES (?, ?)', type, att[1]);
+      attachmentId = await database.run('SELECT id FROM attachments WHERE LAST_INSERT_ROWID()');
+      await database.run('INSERT INTO posts (creation_time, text, attachment_id) VALUES (DATETIME(\'now\'), ?, ?)', json.text, attachmentId);
+      const id = await database.run('SELECT post_id FROM posts WHERE LAST_INSERT_ROWID()');
+      // the URI where the new post is available
+      const postURI = `/${id}`;
+      const status = 201;
+      res.location(postURI).status(status).json({ status: status, message: 'Created' });
+    }
+    // TODO case when there's no attachment
+  });
 });
 
 // retrieve information about a post
