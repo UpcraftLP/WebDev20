@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 'use strict';
 
+// FIXME use express directly instead of http module
+// spec requires this
+
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
