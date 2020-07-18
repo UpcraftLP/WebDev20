@@ -25,8 +25,6 @@ router.post('/post/create', async (req, res, next) => {
         res.status(status).json({ status: status, message: 'invalid attachment', data: att });
       }
       const type = att[0].substring('data:'.length);
-      console.log(type);
-      console.log(att[1]);
       await database.run('INSERT INTO attachments (type, data) VALUES (?, ?)', type, att[1]);
       attachmentId = await database.run('SELECT id FROM attachments WHERE LAST_INSERT_ROWID()');
       await database.run('INSERT INTO posts (creation_time, text, attachment_id) VALUES (DATETIME(\'now\'), ?, ?)', json.text, attachmentId);

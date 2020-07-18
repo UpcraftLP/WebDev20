@@ -25,7 +25,6 @@ if (form) {
       json.attachment = await toBase64(attachment.files[0]);
     }
     const data = JSON.stringify(json);
-    console.log('request: ' + data);
 
     try {
       xhr.send(data);
