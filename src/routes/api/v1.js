@@ -22,7 +22,7 @@ router.post('/post/create', async (req, res, next) => {
       const att = json.attachment.split(';', 2);
       if (att.length !== 2) {
         const status = 400;
-        res.status(status).json({ status: status, message: 'invalid attachment', data: att });
+        res.status(status).json({ status: status, message: 'Bad Request', error: 'Invalid Attachment', error_data: json.attachment });
       }
       const type = att[0].substring('data:'.length);
       await database.run('INSERT INTO attachments (type, data) VALUES (?, ?)', type, att[1]);
