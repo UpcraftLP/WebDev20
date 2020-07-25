@@ -7,17 +7,17 @@
 
 main {
     position: relative;
-    left: 10%;
-    width: 80%;
+    left: 12.5%;
+    width: 85%;
     text-align: center;
-    color: black;
-    background-color: grey;
+    color: whitesmoke;
+    background-color: rgb(50,50,50);
 }
 
 body {
     min-width: 320px;
     padding: 10px;
-    background-color: white;
+    background-color: whitesmoke;
 }
 
 h1 {
@@ -106,4 +106,28 @@ label {
     font-size: 2.0em;
     font-weight: 600;
     color: whitesmoke;
+}
+
+.timestamp{
+    border-top: solid;
+    border-color: orange;
+    padding-top: 5px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+.entry-text{
+    margin-top: 10px;
+}
+
+li{ 
+    justify-content: center;
+    border-style: none;
+    margin: 10px;
+    padding: 10px;
+}
+img{
+    min-width: 40%;
+    max-width: 50%;
+    height: auto;
 }
