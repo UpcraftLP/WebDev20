@@ -38,6 +38,9 @@ const updatePosts = (page, pageCount) => {
             const json = req.response.data;
             console.log(json);
             const li = document.createElement('li');
+            const img = document.createElement('img');
+            img.src = 'img/maps.jpg';
+            li.appendChild(img);
             li.appendChild(document.createTextNode(json.text));
             li.appendChild(document.createTextNode(json.creation_time));
             postSection.appendChild(li);
