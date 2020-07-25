@@ -36,7 +36,7 @@ app.use((err, req, res, next) => {
 app.use((req, res) => {
   if (!strings.isBlank(req.path) && !strings.hasExtension(req.path.toLowerCase())) {
     const file = path.join(__dirname, `client/static/${req.path}.html`);
-    if(fs.existsSync(file)) {
+    if (fs.existsSync(file)) {
       return res.sendFile(file);
     }
   }

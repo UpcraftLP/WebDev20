@@ -41,8 +41,14 @@ const updatePosts = (page, pageCount) => {
             const img = document.createElement('img');
             img.src = 'img/maps.jpg';
             li.appendChild(img);
-            li.appendChild(document.createTextNode(json.text));
-            li.appendChild(document.createTextNode(json.creation_time));
+            const textNode = document.createElement('p');
+            textNode.className = 'entry-text';
+            textNode.innerHTML = json.text;
+            li.appendChild(textNode);
+            const created = document.createElement('p');
+            created.className = 'timestamp';
+            created.innerHTML = json.creation_time; // TODO format timestamp?
+            li.appendChild(created);
             postSection.appendChild(li);
           }
         };
