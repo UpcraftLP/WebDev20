@@ -41,6 +41,8 @@ const updatePosts = (page, pageCount) => {
             const img = document.createElement('img');
             img.src = 'img/maps.jpg';
             li.appendChild(img);
+            const br = document.createElement('br');
+            li.appendChild(br);
             const textNode = document.createElement('p');
             textNode.className = 'entry-text';
             textNode.innerHTML = json.text;
