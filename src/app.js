@@ -2,6 +2,7 @@
 const express = require('express');
 const logger = require('morgan');
 const path = require('path');
+const fs = require('fs');
 const apiRouterV1 = require('./routes/api/v1');
 const strings = require('./util/strings');
 
@@ -34,10 +35,12 @@ app.use((err, req, res, next) => {
 // catch 404 and forward to error handler
 app.use((req, res) => {
   if (!strings.isBlank(req.path) && !strings.hasExtension(req.path.toLowerCase())) {
-    res.sendFile(path.join(__dirname, `client/static/${req.path}.html`));
-  } else {
-    res.redirect('/error/404');
+    const file = path.join(__dirname, `client/static/${req.path}.html`);
+    if(fs.existsSync(file)) {
+      return res.sendFile(file);
+    }
   }
+  res.redirect('/error/404');
 });
 
 module.exports = app;
