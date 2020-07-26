@@ -45,11 +45,25 @@ const processDB = async (func) => {
       const statement = await database.prepare('INSERT INTO posts (creation_time, text) VALUES (DATETIME(?), ?)');
       // TODO populate with sample data
       try {
-        await statement.run('now', 'Sample Text');
-        await statement.run('2008-12-30T09:34', 'Sample Text 2');
-        await statement.run('2018-12-30T11:39', 'Sample Text 3');
-        await statement.run('2019-12-30T21:54', 'Sample Text 4');
-        await statement.run('2020-05-30T09:44', 'Sample Text 234243');
+        const str = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n' +
+          'Donec sem risus, ultricies vitae turpis sit amet, molestie mattis justo.\n' +
+          'Nulla dignissim mauris ut dolor sollicitudin semper. Aenean nec accumsan leo.\n' +
+          'Sed fermentum, ipsum eget semper dictum, odio dui dictum urna, eu pretium purus nisl in risus.\n' +
+          'Ut pharetra tellus non dui convallis congue.\n' +
+          'Vestibulum porta, felis at pellentesque rhoncus, purus diam accumsan ipsum, eget vehicula purus leo a erat.\n' +
+          'Phasellus blandit, lectus quis placerat tempor, libero massa vestibulum libero, id auctor nibh augue in lorem.\n' +
+          'Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.\n' +
+          'Curabitur erat augue, fringilla quis ipsum non, condimentum finibus dui.\n' +
+          'Duis dui nisl, pharetra vel suscipit ut, sodales quis turpis.\n' +
+          'Quisque efficitur tempor nisl in faucibus.\n' +
+          'Pellentesque interdum arcu et semper sollicitudin.\n' +
+          'Aenean lacinia feugiat leo, vel ultricies dui aliquet ac.\n' +
+          'Aenean id velit id tortor cursus suscipit eu et orci.';
+        await statement.run('now', str);
+        await statement.run('2008-12-30T09:34', str);
+        await statement.run('2018-12-30T11:39', str);
+        await statement.run('2019-12-30T21:54', str);
+        await statement.run('2020-05-30T09:44', str);
         await statement.finalize();
       } catch (e) {
         console.error('unable to write sample data');

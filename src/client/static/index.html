@@ -11,28 +11,32 @@
     <title>Shiny Octo Umbrella</title>
 </head>
 <body>
+<header>
+    <h1>Mein Blog</h1>
+    <h6>Johannes Mahr, Joshua Schirra, SS 2020</h6>
+</header>
 <main>
-    <article>
-        <section class="header">
-            <h1>My Blog</h1>
-            <sub>Johannes Mahr, Joshua Schirra, SS 2020</sub>
-        </section>
-
-        <section class="posts">
-            <button disabled id="prevButton">Vorherige Seite</button>
-            <p id="pageNumber">Seite 1</p>
-            <button disabled id="nextButton">Nächste Seite</button>
-            <ol id="postContainer">
-
-            </ol>
-        </section>
-    </article>
-
-
+    <div class="pagination">
+        <button disabled class="prevButton row">Vorherige Seite</button>
+        <p class="pageNumber row">Seite 1</p>
+        <button disabled class="nextButton row">Nächste Seite</button>
+    </div>
+    <section class="posts">
+        <ol id="postContainer">
+        </ol>
+    </section>
+    <div class="pagination">
+        <button disabled class="prevButton row">Vorherige Seite</button>
+        <p class="pageNumber row">Seite 1</p>
+        <button disabled class="nextButton row">Nächste Seite</button>
+    </div>
 </main>
+<div class="spacer">
+    <br>
+</div>
 <footer>
-
-
+    <p>Copyright (C) 2020 Johannes Mahr, Joshua Schirra</p>
+    <p>SS 2020 - Trier, University for Applied Sciences</p>
 </footer>
 </body>
 </html>

@@ -21,7 +21,7 @@ if (form) {
     const json = {
       text: text
     };
-    if (attachment) {
+    if (attachment.files.length > 0 && attachment.files[0].size > 0) {
       json.attachment = await toBase64(attachment.files[0]);
     }
     const data = JSON.stringify(json);

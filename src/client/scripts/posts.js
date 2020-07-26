@@ -1,4 +1,5 @@
 const baseURL = '/api/v1';
+const maps = require('./maps');
 
 const getPageCount = (callback) => {
   const http = new XMLHttpRequest();
@@ -26,7 +27,7 @@ const updatePosts = (page, pageCount) => {
   http.onreadystatechange = () => {
     if (http.readyState === 4 && http.status === 200) {
       const postSection = document.getElementById('postContainer');
-      postSection.innerHTML = ''; // clear posts section
+      const postList = {};
       http.response.data.forEach(d => {
         const id = d.post_id;
         const req = new XMLHttpRequest();
@@ -36,22 +37,44 @@ const updatePosts = (page, pageCount) => {
         req.onreadystatechange = () => {
           if (req.readyState === 4 && req.status === 200) {
             const json = req.response.data;
-            console.log(json);
             const li = document.createElement('li');
-            const img = document.createElement('img');
-            img.src = 'img/maps.jpg';
-            li.appendChild(img);
-            const br = document.createElement('br');
-            li.appendChild(br);
+            const created = document.createElement('p');
+            created.className = 'entry-timestamp';
+            created.innerHTML = new Date(json.creation_time).toLocaleString();
+            li.appendChild(created);
+            if (json.data) {
+              const attachment = document.createElement('div');
+              attachment.className = 'entry-attachment';
+
+              if (json.type === 'application/geo+json') {
+                const map = document.createElement('div');
+                attachment.appendChild(map);
+                map.className = 'entry-map';
+                maps.create(map, {
+                  center: { lat: 0, lng: 0 },
+                  zoom: 4
+                }, json.data);
+              } else if (json.type === 'image/jpeg') {
+                const img = document.createElement('img');
+                img.src = 'data:application/jpeg;' + json.data;
+                img.className = 'entry-img';
+                attachment.appendChild(img);
+              } else {
+                console.error('error displaying unknown mime type: ' + json.type);
+              }
+              li.appendChild(attachment);
+            }
+
             const textNode = document.createElement('p');
             textNode.className = 'entry-text';
             textNode.innerHTML = json.text;
             li.appendChild(textNode);
-            const created = document.createElement('p');
-            created.className = 'timestamp';
-            created.innerHTML = json.creation_time; // TODO format timestamp?
-            li.appendChild(created);
-            postSection.appendChild(li);
+            postList[json.creation_time] = li;
+            postSection.innerHTML = ''; // clear posts section
+            const keysSorted = Object.keys(postList).sort();
+            for (let i = keysSorted.length; i > 0; i--) {
+              postSection.appendChild(postList[keysSorted[i - 1]]);
+            }
           }
         };
         try {
@@ -60,7 +83,9 @@ const updatePosts = (page, pageCount) => {
           console.log(e);
         }
       });
-      document.getElementById('pageNumber').innerHTML = `Seite ${page} / ${pageCount}`;
+      Array.prototype.forEach.call(document.getElementsByClassName('pageNumber'), el => {
+        el.innerHTML = `Seite ${page} / ${pageCount}`;
+      });
     }
   };
 

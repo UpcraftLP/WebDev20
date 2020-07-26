@@ -17,26 +17,30 @@ router.use('/', (req, res, next) => {
 router.post('/post/create', async (req, res, next) => {
   const json = req.body;
   await db(async database => {
-    let attachmentId = null;
     if (json.attachment) {
       const att = json.attachment.split(';', 2);
       if (att.length !== 2) {
         const status = 400;
         return res.status(status).json({ status: status, message: 'Bad Request', error: 'Invalid Attachment', error_data: json.attachment });
       }
-      const type = att[0].substring('data:'.length);
+      let type = att[0].substring('data:'.length);
+      if (type === 'application/json' || type === 'application/geo+json') {
+        type = 'application/geo+json';
+      } else {
+        type = 'image/jpeg';
+      }
+
       await database.run('INSERT INTO attachments (type, data) VALUES (?, ?)', type, att[1]);
-      attachmentId = await database.run('SELECT id FROM attachments WHERE LAST_INSERT_ROWID()');
-      await database.run('INSERT INTO posts (creation_time, text, attachment_id) VALUES (DATETIME(\'now\'), ?, ?)', json.text, attachmentId);
-      const id = await database.run('SELECT post_id FROM posts WHERE LAST_INSERT_ROWID()');
-      // the URI where the new post is available
-      const postURI = `/${id}`;
-      const status = 201;
-      res.location(postURI).status(status).json({ status: status, message: 'Created' });
+      const storedAttachment = await database.get('SELECT attachments.id FROM attachments WHERE attachments.ROWID = LAST_INSERT_ROWID()');
+      await database.run('INSERT INTO posts (creation_time, text, attachment_id) VALUES (DATETIME(\'now\'), ?, ?)', json.text, storedAttachment.id);
     } else {
-      next();
+      await database.run('INSERT INTO posts (creation_time, text) VALUES (DATETIME(\'now\'), ?)', json.text);
     }
-    // TODO case when there's no attachment
+    const storedPost = await database.get('SELECT post_id FROM posts WHERE posts.ROWID = LAST_INSERT_ROWID()');
+    // the URI where the new post is available
+    const postURI = `/${storedPost.post_id}`;
+    const status = 201;
+    res.location(postURI).status(status).json({ status: status, message: 'Created' });
   });
 });
 
@@ -90,7 +94,7 @@ router.get('/posts', async (req, res, next) => {
   // const sortingOrder = req.query.sort ? req.query.sort : 'latest';
   const sqlOffset = (page - 1) * 10;
   // SELECT DISTINCT Name name FROM playlists ORDER BY name
-  const data = await db(async database => database.all(`SELECT DISTINCT post_id FROM posts ORDER BY creation_time limit 10 offset ${sqlOffset}`));
+  const data = await db(async database => database.all(`SELECT DISTINCT post_id FROM posts ORDER BY creation_time DESC limit 10 offset ${sqlOffset}`));
   if (data) {
     const status = 200;
     res.status(status).json({ status: status, message: 'OK', data: data });

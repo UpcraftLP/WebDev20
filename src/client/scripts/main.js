@@ -1,5 +1,6 @@
 'use strict';
 require('../styles/style.css');
+require('./include');
 require('./submit');
 const posts = require('./posts');
 
@@ -7,33 +8,34 @@ let page = 1;
 let pageCount;
 
 const updateButtons = () => {
-  const nextButton = document.getElementById('nextButton');
-  const prevButton = document.getElementById('prevButton');
-  if (prevButton && nextButton) {
-    posts.updatePosts(page, pageCount);
-    prevButton.disabled = page <= 1;
-    nextButton.disabled = page >= pageCount;
-  }
+  posts.updatePosts(page, pageCount);
+  const prv = page <= 1;
+  const nxt = page >= pageCount;
+  Array.prototype.forEach.call(document.getElementsByClassName('prevButton'), btn => {
+    btn.disbled = prv;
+  });
+  Array.prototype.forEach.call(document.getElementsByClassName('nextButton'), btn => {
+    btn.disbled = nxt;
+  });
 };
 
-const nextBtn = document.getElementById('nextButton');
-if (nextBtn) {
+Array.prototype.forEach.call(document.getElementsByClassName('nextButton'), nextBtn => {
   nextBtn.addEventListener('click', () => {
     if (page < pageCount) {
       page += 1;
     }
     updateButtons();
   });
-}
-const prevBtn = document.getElementById('prevButton');
-if (prevBtn) {
+});
+
+Array.prototype.forEach.call(document.getElementsByClassName('prevButton'), prevBtn => {
   prevBtn.addEventListener('click', () => {
     if (page > 1) {
       page -= 1;
     }
     updateButtons();
   });
-}
+});
 
 posts.getPageCount(count => {
   pageCount = count;
