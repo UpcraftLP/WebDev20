@@ -27,7 +27,7 @@
     overflow-wrap: break-word;
 }
 
-ol {
+.posts {
     list-style: none;
     display: block;
     margin-left: auto;
