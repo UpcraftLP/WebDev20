@@ -79,7 +79,11 @@ const updatePosts = (page, pageCount) => {
               delReq.setRequestHeader('Content-Type', 'application/json');
               delReq.onreadystatechange = () => {
                 if (delReq.readyState === 4) {
-                  location.reload();
+                  if (delReq.status === 202) {
+                    location.reload();
+                  } else {
+                    location.redirect('/error/500');
+                  }
                 }
               };
               try {
