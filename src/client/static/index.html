@@ -11,30 +11,34 @@
     <title>Mein Blog</title>
 </head>
 <body>
-<header>
-    <h1>Mein Blog</h1>
-    <h6>Johannes Mahr, Joshua Schirra, SS 2020</h6>
-</header>
-<main>
-    <div class="pagination">
-        <button class="prev-button">Vorherige Seite</button>
-        <span class="pageNumber">Seite 1</span>
-        <button class="next-button">Nächste Seite</button>
-    </div>
-    <div class="posts">
-        <!--suppress HtmlUnknownTarget -->
-        <a href="/submit" class="submit-link">Neuen Post erstellen</a>
-        <ol id="postContainer">
-        </ol>
-    </div>
-    <div class="pagination">
-        <button class="prev-button">Vorherige Seite</button>
-        <span class="pageNumber">Seite 1</span>
-        <button class="next-button">Nächste Seite</button>
-    </div>
-</main>
-<div class="spacer">
-    <br>
+<div class="content">
+    <header>
+        <h1>Mein Blog</h1>
+        <h6>Johannes Mahr, Joshua Schirra, SS 2020</h6>
+    </header>
+    <main>
+        <div class="pagination-container">
+            <div class="pagination">
+                <button class="prev-button clickable">Vorherige Seite</button>
+                <span class="pageNumber">Seite 1</span>
+                <button class="next-button clickable">Nächste Seite</button>
+            </div>
+            <!--suppress HtmlUnknownTarget -->
+            <a href="/submit" class="submit-link clickable">Neuen Post erstellen</a>
+        </div>
+        <div class="posts">
+            <ol id="postContainer">
+            </ol>
+        </div>
+        <div class="pagination-container">
+            <div class="pagination">
+                <button class="prev-button clickable">Vorherige Seite</button>
+                <span class="pageNumber">Seite 1</span>
+                <button class="next-button clickable">Nächste Seite</button>
+            </div>
+        </div>
+    </main>
+    <div class="spacer"></div>
 </div>
 <footer>
     <p>Copyright (C) 2020 Johannes Mahr, Joshua Schirra</p>

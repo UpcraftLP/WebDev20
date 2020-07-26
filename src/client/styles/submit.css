@@ -1,0 +1,43 @@
+.submit {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 4.375rem 2.625rem 5.375rem 2.625rem;
+    height: 30vh;
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin-bottom: 23px;
+    box-shadow: 10px 27px 100px #42494b;
+}
+
+.nostyle {
+    text-decoration: none;
+}
+
+form {
+    text-align: center;
+}
+
+label {
+    color: #000000;
+    font-weight: bold;
+    font-size: 30pt;
+    margin-bottom: 20px;
+    padding-bottom: 30px;
+}
+
+input[type="text"] {
+    box-shadow: 10px 27px 100px #42494b;
+    min-height: 20vh;
+    width: 95%;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+input[type="submit"] {
+    padding: 5px;
+    margin: 5px;
+}
+
+input:hover[type="submit"] {
+}

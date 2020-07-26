@@ -79,13 +79,7 @@ const updatePosts = (page, pageCount) => {
               delReq.setRequestHeader('Content-Type', 'application/json');
               delReq.onreadystatechange = () => {
                 if (delReq.readyState === 4) {
-                  window.rebuildPage();
-                  getPageCount(count => {
-                    if (count === 0) {
-                      // force reload to fix page state
-                      location.reload();
-                    }
-                  });
+                  location.reload();
                 }
               };
               try {

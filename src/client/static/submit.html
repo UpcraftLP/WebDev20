@@ -11,20 +11,31 @@
     <title>Submit new Post</title>
 </head>
 <body>
-<header>
-    <h1>Mein Blog</h1>
-    <h6>Johannes Mahr, Joshua Schirra, SS 2020</h6>
-</header><header></header>
-<main>
-    <form class="submit" id="form-submit" onsubmit="return false">
-        <label for="input-text">Ihr Blogeintrag</label> <br>
-        <textarea cols="100" id="input-text" required rows="10" type="text"></textarea><br>
+<div class="content">
+    <a href="/" class="nostyle">
+        <header>
+            <h1>Mein Blog</h1>
+            <h6>Johannes Mahr, Joshua Schirra, SS 2020</h6>
+        </header>
+    </a>
+    <div class="spacer"></div>
+    <main>
+        <div class="submit">
+            <form id="form-submit" onsubmit="return false">
+                <label for="input-text">Ihr Blogeintrag</label> <br>
+                <div class="spacer"></div>
+                <textarea wrap="hard" cols="100" id="input-text" required rows="10" type="text"></textarea><br>
 
-        <input accept="image/jpeg,.jpg,.jpeg,application/geo+json,.json,.geojson" id="input-attachment" type="file">
+                <input accept="image/jpeg,.jpg,.jpeg,application/geo+json,.json,.geojson" id="input-attachment"
+                       type="file" class="clickable">
 
-        <input type="submit" value="Post erstellen">
-    </form>
-</main>
+                <input type="submit" value="Post erstellen" class="clickable">
+            </form>
+            <a href="/" class="clickable">Zurück</a>
+        </div>
+    </main>
+    <div class="spacer"></div>
+</div>
 <footer>
     <p>Copyright (C) 2020 Johannes Mahr, Joshua Schirra</p>
     <p>SS 2020 - Trier, University for Applied Sciences</p>

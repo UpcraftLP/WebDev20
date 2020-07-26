@@ -1,11 +1,11 @@
 @import 'posts.css';
+@import 'submit.css';
 
 body {
     size: landscape;
     width: 100%;
     height: 100%;
-    margin: 0;
-    top: 0;
+    margin: auto;
     font-family: Arial, Helvetica, sans-serif;
     /*noinspection CssUnknownTarget*/
     background: #4c4c4c url('https://images8.alphacoders.com/973/973337.jpg') fixed no-repeat;
@@ -13,7 +13,7 @@ body {
 
 /* title */
 h1 {
-    color: #71cbd7;
+    color: #80f7ff;
     margin-top: 0;
 }
 
@@ -33,6 +33,7 @@ header {
 }
 
 main {
+    height: 100%;
     margin-left: 25%;
     width: 50%;
 }
@@ -45,11 +46,31 @@ main {
     text-align: center;
 }
 
-.submit-link {
+.pageNumber {
+    color: #80f7ff;
+    font-weight: 400;
+}
+
+.pagination-container {
+    justify-content: center;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.clickable {
+    text-decoration: none;
+    border-radius: 5px;
+    background-color: #959595;
+    cursor: pointer;
+    color: #80f7ff;
     -webkit-appearance: button;
     -webkit-writing-mode: horizontal-tb !important;
     text-rendering: auto;
-    color: #393939;
     letter-spacing: normal;
     word-spacing: normal;
     text-transform: none;
@@ -58,20 +79,38 @@ main {
     display: inline-block;
     text-align: center;
     align-items: flex-start;
-    cursor: default;
-    background-color: rgb(239, 239, 239);
+    cursor: pointer;
     box-sizing: border-box;
-    margin: 0;
     font: 400 13.3333px Arial;
     padding: 1px 6px;
     border-width: 2px;
     border-style: outset;
-    border-color: rgb(118, 118, 118);
+    border-color: #767676;
     border-image: initial;
+    margin-bottom: 10px;
+    margin-top: 7px;
+}
+
+.clickable:hover:not(:disabled) {
+    background-color: #ffffff;
+    color: #4c4c4c;
+}
+
+.clickable:disabled {
+    cursor: default;
+    color: #000000;
+}
+
+.content {
+    margin: auto;
+    height: auto !important;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column
 }
 
 footer {
-    position: static;
+    flex: 1;
     left: 0;
     right: 0;
     bottom: 0;
@@ -79,8 +118,12 @@ footer {
     height: auto;
     padding-top: 5px;
     padding-bottom: 10px;
-    background-color: #959595;
+    background-color: rgba(66, 66, 66, 0.8);
     text-align: center;
     font-size: 10pt;
-    color: #ffffff;
+    color: #83ddf8;
+}
+
+.spacer {
+    height: 30px;
 }

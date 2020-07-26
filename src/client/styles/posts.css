@@ -27,16 +27,16 @@
     overflow-wrap: break-word;
 }
 
-.posts {
+ol {
     list-style: none;
     display: block;
     margin-left: auto;
     margin-right: auto;
+    padding: 0;
 }
 
 li {
     padding: 4.375rem 2.625rem 5.375rem 2.625rem;
-    /*border: 0.125rem solid #d22929;*/
     background-color: #ffffff;
     border-radius: 10px;
     margin-bottom: 23px;

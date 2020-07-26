@@ -31,5 +31,6 @@ if (form) {
     } catch (e) {
       console.log(e);
     }
+    window.location.replace('/');
   });
 }
