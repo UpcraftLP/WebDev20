@@ -53,7 +53,7 @@ const updatePosts = (page, pageCount) => {
                 attachment.appendChild(map);
                 map.className = 'entry-map';
                 maps.create(map, {
-                  center: {lat: 0, lng: 0},
+                  center: { lat: 0, lng: 0 },
                   zoom: 4
                 }, json.data);
               } else if (json.type === 'image/jpeg') {
@@ -80,7 +80,7 @@ const updatePosts = (page, pageCount) => {
               delReq.onreadystatechange = () => {
                 if (delReq.readyState === 4) {
                   window.rebuildPage();
-                  posts.getPageCount(count => {
+                  getPageCount(count => {
                     if (count === 0) {
                       // force reload to fix page state
                       location.reload();

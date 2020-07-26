@@ -14,9 +14,9 @@ window.googleMapsLoaded = () => {
 
 const createMapInternal = value => {
   const processPoints = (geometry, callback, thisArg) => {
-    if (geometry instanceof google.maps.LatLng) {
+    if (geometry instanceof window.google.maps.LatLng) {
       callback.call(thisArg, geometry);
-    } else if (geometry instanceof google.maps.Data.Point) {
+    } else if (geometry instanceof window.google.maps.Data.Point) {
       callback.call(thisArg, geometry.get());
     } else {
       geometry.getArray().forEach(function (g) {
@@ -24,9 +24,9 @@ const createMapInternal = value => {
       });
     }
   };
-  const map = new google.maps.Map(value.div, value.options);
+  const map = new window.google.maps.Map(value.div, value.options);
   // zoom to show all the features
-  const bounds = new google.maps.LatLngBounds();
+  const bounds = new window.google.maps.LatLngBounds();
   map.data.addListener('addfeature', function (e) {
     processPoints(e.feature.getGeometry(), bounds.extend, bounds);
     map.fitBounds(bounds);
@@ -34,7 +34,7 @@ const createMapInternal = value => {
 
   // zoom to the clicked feature
   map.data.addListener('click', function (e) {
-    const bound = new google.maps.LatLngBounds();
+    const bound = new window.google.maps.LatLngBounds();
     processPoints(e.feature.getGeometry(), bound.extend, bound);
     map.fitBounds(bound);
   });
