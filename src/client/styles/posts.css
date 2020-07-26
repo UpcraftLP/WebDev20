@@ -23,6 +23,10 @@
     font-weight: bold;
 }
 
+.entry-text {
+    overflow-wrap: break-word;
+}
+
 ol {
     list-style: none;
     display: block;

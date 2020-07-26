@@ -1,5 +1,7 @@
-const baseURL = '/api/v1';
+'use strict';
 const maps = require('./maps');
+
+const baseURL = '/api/v1';
 
 const getPageCount = (callback) => {
   const http = new XMLHttpRequest();
@@ -28,7 +30,7 @@ const updatePosts = (page, pageCount) => {
     if (http.readyState === 4 && http.status === 200) {
       const postSection = document.getElementById('postContainer');
       const postList = {};
-      http.response.data.forEach(d => {
+      http.response.data.forEach(async d => {
         const id = d.post_id;
         const req = new XMLHttpRequest();
         req.open('GET', `${baseURL}/posts/${id}`);
@@ -51,7 +53,7 @@ const updatePosts = (page, pageCount) => {
                 attachment.appendChild(map);
                 map.className = 'entry-map';
                 maps.create(map, {
-                  center: { lat: 0, lng: 0 },
+                  center: {lat: 0, lng: 0},
                   zoom: 4
                 }, json.data);
               } else if (json.type === 'image/jpeg') {
@@ -78,6 +80,12 @@ const updatePosts = (page, pageCount) => {
               delReq.onreadystatechange = () => {
                 if (delReq.readyState === 4) {
                   window.rebuildPage();
+                  posts.getPageCount(count => {
+                    if (count === 0) {
+                      // force reload to fix page state
+                      location.reload();
+                    }
+                  });
                 }
               };
               try {

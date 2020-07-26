@@ -43,7 +43,6 @@ const processDB = async (func) => {
 
     if (populateDB) {
       const statement = await database.prepare('INSERT INTO posts (creation_time, text) VALUES (DATETIME(?), ?)');
-      // TODO populate with sample data
       try {
         const str = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n' +
           'Donec sem risus, ultricies vitae turpis sit amet, molestie mattis justo.\n' +
