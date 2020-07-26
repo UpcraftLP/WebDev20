@@ -12,12 +12,10 @@ const updateButtons = () => {
   const prv = page <= 1;
   const nxt = page >= pageCount;
   Array.from(document.getElementsByClassName('prev-button')).forEach(btn => {
-    btn.disbled = prv;
-    console.log("disabled prev: " + prv + ";" + btn);
+    btn.disabled = prv;
   });
   Array.from(document.getElementsByClassName('next-button')).forEach(btn => {
-    btn.disbled = nxt;
-    console.log("disabled next: " + nxt);
+    btn.disabled = nxt;
   });
 };
 window.rebuildPage = updateButtons;
