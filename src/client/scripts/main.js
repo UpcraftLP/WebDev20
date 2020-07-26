@@ -8,6 +8,7 @@ let page = 1;
 let pageCount;
 
 const updateButtons = () => {
+  const prePageCount = pageCount;
   posts.updatePosts(page, pageCount);
   const prv = page <= 1;
   const nxt = page >= pageCount;
@@ -17,7 +18,14 @@ const updateButtons = () => {
   Array.prototype.forEach.call(document.getElementsByClassName('nextButton'), btn => {
     btn.disbled = nxt;
   });
+  posts.getPageCount(count => {
+    if(prePageCount !== 0 && count === 0) {
+      // force reload to fix page state
+      location.reload();
+    }
+  });
 };
+window.rebuildPage = updateButtons;
 
 Array.prototype.forEach.call(document.getElementsByClassName('nextButton'), nextBtn => {
   nextBtn.addEventListener('click', () => {

@@ -69,6 +69,24 @@ const updatePosts = (page, pageCount) => {
             textNode.className = 'entry-text';
             textNode.innerHTML = json.text;
             li.appendChild(textNode);
+            const del = document.createElement('button');
+            del.innerHTML = 'Post entfernen';
+            del.addEventListener('click', () => {
+              const delReq = new XMLHttpRequest();
+              delReq.open('POST', `${baseURL}/posts/${id}/delete`);
+              delReq.setRequestHeader('Content-Type', 'application/json');
+              delReq.onreadystatechange = () => {
+                if (delReq.readyState === 4) {
+                  window.rebuildPage();
+                }
+              };
+              try {
+                delReq.send();
+              } catch (e) {
+                console.log(e);
+              }
+            });
+            li.appendChild(del);
             postList[json.creation_time] = li;
             postSection.innerHTML = ''; // clear posts section
             const keysSorted = Object.keys(postList).sort();

@@ -64,9 +64,20 @@ router.get('/posts/:id', async (req, res, next) => {
 
 // delete post (and attachment, if any)
 router.post('/posts/:id/delete', (req, res, next) => {
+  // get post information
   const postId = req.params.id;
-  const status = 202;
-  res.status(status).json({ status: status, message: 'Post Deleted', post: postId });
+  try {
+    db(async database => {
+      await database.run('DELETE FROM attachments WHERE attachments.id in(SELECT posts.attachment_id from posts where posts.post_id = ?)', postId); // we don't deduplicate data, so this should be fine
+      database.run('DELETE FROM posts WHERE post_id = ?', postId);
+    });
+    const status = 200;
+    return res.status(status).json({ status: status, message: 'OK', post: postId });
+  } catch (e) {
+    console.log(e);
+    const status = 500;
+    res.status(status).json({ status: status, message: 'Internal Server Error' });
+  }
 });
 
 // modify post
